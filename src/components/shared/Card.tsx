@@ -1,27 +1,36 @@
 import { FC, ReactElement } from 'react'
 
 interface CardInterface {
-  children?: string
+  titleIcon?: string
+  children?: ReactElement
   title?: string
   footer?: ReactElement
+  devider?: boolean
 }
 
-const Card: FC<CardInterface> = ({children, title, footer}) => {
+const Card: FC<CardInterface> = ({ titleIcon, children, title, footer, devider = false }) => {
   return (
-    <div className='bg-white shadow-sm p-8 border border-gray-100 space-y-2'>
+    <div className='bg-white shadow-sm px-3 py-4 border border-gray-100 space-y-2'>
+
       {
         title &&
-        <h1 className='text-lg font-semibold'>{title}</h1>
+        <div className='flex space-x-2 items-center'>
+          {titleIcon && <i className={`${titleIcon} text-zinc-800`}></i>}
+          <h1 className='text-lg font-semibold text-zinc-800'>{title}</h1>
+        </div>
+      }
+      {
+        devider && <div className='border-b border-b-gray-200 -mx-4 my-3' />
       }
       {
         children &&
         <div className='text-gray-500'>{children}</div>
       }
       {
-          footer &&
-          <div className='mt-4'>
-              {footer}
-          </div>
+        footer &&
+        <div className='mt-4'>
+          {footer}
+        </div>
       }
     </div>
   )
