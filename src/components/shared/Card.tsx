@@ -1,22 +1,22 @@
-import { FC, ReactElement } from 'react'
+import { FC, ReactElement, type ReactNode } from 'react'
 
 interface CardInterface {
   titleIcon?: string
   children?: ReactElement
-  title?: string
+  title?: ReactNode
   footer?: ReactElement
   devider?: boolean
 }
 
 const Card: FC<CardInterface> = ({ titleIcon, children, title, footer, devider = false }) => {
   return (
-    <div className='bg-white shadow-sm px-3 py-4 border border-gray-100 space-y-2'>
+    <div className='bg-white shadow-sm px-3 py-4 border border-gray-100 space-y-2 rounded'>
 
       {
         title &&
         <div className='flex space-x-2 items-center'>
           {titleIcon && <i className={`${titleIcon} text-zinc-800`}></i>}
-          <h1 className='text-lg font-semibold text-zinc-800'>{title}</h1>
+          <h1 className='text-lg font-semibold text-zinc-800 capitalize'>{title}</h1>
         </div>
       }
       {

@@ -2,8 +2,8 @@ import type { ReactNode } from "react"
 import type React from "react"
 
 interface AvaratInterface {
-    dpSize?: "lg" | "md"
-    title?: string
+    dpSize?: "lg" | "md" | "sm"
+    title?: string | null
     subtitle?: ReactNode
     image?: string
     titleColor?: string
@@ -14,7 +14,7 @@ const Avatar: React.FC<AvaratInterface> = ({ dpSize = "lg", title, subtitle = "w
         <div className='flex gap-3 p-3 items-center'>
             {
                 image &&
-                <img src={image} className={`rounded-full  ${dpSize === 'md' ? 'h-12 w-12' : 'h-17 w-17'} object-content`} />
+                <img src={image} className={`rounded-full  ${dpSize === 'sm' ? 'h-6 w-6' : dpSize === 'md' ? 'h-12 w-12' : 'h-17 w-17'} object-content`} />
             }
             {
                 (title && subtitle) && <div className='flex flex-col'>

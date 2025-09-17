@@ -1,16 +1,16 @@
 export const menus = [
     {
-        href: "/app",
+        href: "/app/dashboard",
         label: "dashboard",
         icon: 'ri-dashboard-3-fill'
     },
     {
-        href: "/posts",
+        href: "/app/my-post",
         label: "my post",
         icon: 'ri-sticky-note-fill'
     },
     {
-        href: "/friends",
+        href: "/app/friends",
         label: "friends",
         icon: 'ri-group-fill'
     }
