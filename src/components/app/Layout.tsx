@@ -79,7 +79,10 @@ const Layout = () => {
                   <div className='space-x-3'>
                     <i className="ri-message-2-line text-blue-500 text-xl"></i>
                     <i className="ri-phone-line text-green-500 text-xl"></i>
-                    <i className="ri-vidicon-line text-orange-400 text-xl"></i>
+
+                    <Link to={'/app/video-chat'}>
+                      <i className="ri-vidicon-line text-orange-400 text-xl"></i>
+                    </Link>
                   </div>
                 </div>
               ))
