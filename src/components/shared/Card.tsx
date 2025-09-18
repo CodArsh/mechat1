@@ -16,7 +16,7 @@ const Card: FC<CardInterface> = ({ titleIcon, children, title, footer, devider =
         title &&
         <div className='flex space-x-2 items-center'>
           {titleIcon && <i className={`${titleIcon} text-zinc-800`}></i>}
-          <h1 className='flex justify-between items-center w-full text-lg font-semibold text-zinc-800 capitalize px-2 py-1'>{title}</h1>
+          <h1 className='flex justify-between items-center w-full text-lg font-semibold text-zinc-800 capitalize py-1'>{title}</h1>
         </div>
       }
       {
