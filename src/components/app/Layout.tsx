@@ -3,6 +3,7 @@ import Avatar from '../shared/Avatar'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { menus, suggested } from '../../constants'
 import { useState } from 'react'
+import Dashboard from './Dashboard'
 
 const Layout = () => {
 
@@ -57,7 +58,10 @@ const Layout = () => {
             </div>
           }
           devider>
-          <Outlet />
+          {
+            pathname === '/app' ? <Dashboard /> : <Outlet />
+          }
+
         </Card>
       </section>
 

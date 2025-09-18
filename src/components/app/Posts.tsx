@@ -22,7 +22,20 @@ const Posts = () => {
                                 </div>
                             </div>
                             <Divider />
-                            sdd
+                            <div className="space-x-6 flex items-center">
+                                <button>
+                                    <i className="ri-thumb-up-fill text-blue-500"></i>
+                                    <label className="text-xs">1.2k</label>
+                                </button>
+                                <button>
+                                    <i className="ri-thumb-down-line"></i>
+                                    <label className="text-xs">58</label>
+                                </button>
+                                <button>
+                                    <i className="ri-chat-ai-line"></i>
+                                    <label className="text-xs">325</label>
+                                </button>
+                            </div>
                         </>
 
                     </Card>
