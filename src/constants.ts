@@ -15,3 +15,18 @@ export const menus = [
         icon: 'ri-group-fill'
     }
 ]
+
+export const suggested = [
+    {
+        user: 'Faizan'
+    },
+    {
+        user: 'Shahzad'
+    },
+    {
+        user: 'Sahil'
+    },
+    {
+        user: 'Nilofar'
+    }
+]

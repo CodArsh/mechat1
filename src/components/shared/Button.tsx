@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, type ReactNode } from 'react'
 import 'remixicon/fonts/remixicon.css'
 
 const ButtonModel = {
@@ -12,7 +12,7 @@ const ButtonModel = {
 }
 
 interface ButtonInterface {
-    children?: string
+    children?: ReactNode
     type?: "primary" | "secondary" | "danger" | "warning" | "dark" | "success" | "info"
     onClick?: ()=>void
     icon?: string
