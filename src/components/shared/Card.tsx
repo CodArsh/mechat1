@@ -6,11 +6,12 @@ interface CardInterface {
   title?: ReactNode
   footer?: ReactElement
   devider?: boolean
+  noPadding?: boolean
 }
 
-const Card: FC<CardInterface> = ({ titleIcon, children, title, footer, devider = false }) => {
+const Card: FC<CardInterface> = ({ noPadding = false, titleIcon, children, title, footer, devider = false }) => {
   return (
-    <div className='bg-white shadow-sm px-3 py-4 border border-gray-100 space-y-2 rounded'>
+    <div className={`bg-white shadow-lg ${noPadding ? '' : 'px-5 py-4'} rounded-lg border border-gray-100 space-y-2`}>
 
       {
         title &&
