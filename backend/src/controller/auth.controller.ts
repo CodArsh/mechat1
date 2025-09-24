@@ -11,6 +11,11 @@ interface tokenInterface {
     email: string
     mobile: string
 }
+
+interface ErrorMessage extends Error {
+    status?: number
+}
+
 const generateToken = (payload: tokenInterface) => {
     return jwt.sign(payload, process.env.AUTH_SECRET!, { expiresIn: accessTokenExpiry })
 }
@@ -27,12 +32,18 @@ export const login = async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body
         const user = await AuthModel.findOne({ email })
-        if (!user)
-            throw new Error("User not found!")
+        if (!user) {
+            const err: ErrorMessage = new Error("User not found!")
+            err.status = 404
+            throw err
+        }
 
         const isLogin = await bcrypt.compare(password, user.password)
-        if (!isLogin)
-            throw new Error("Invalid Crediantial")
+        if (!isLogin) {
+            const err: ErrorMessage = new Error("Invalid Credentials")
+            err.status = 401
+            throw err
+        }
 
         const payload = {
             id: user._id,
@@ -43,11 +54,16 @@ export const login = async (req: Request, res: Response) => {
         const accesstoken = generateToken(payload)
         const options = {
             httpOnly: true,
-            maxAge: (10 * 60)
+            maxAge: (10 * 60) * 1000,
+            secure: true,
+            domain: 'localhost'
         }
         res.cookie("accessToken", accesstoken, options)
-        res.json({ message: "Welcome" })
-    } catch (error: any) {
-        res.status(500).json({ message: error.message })
+        res.json({ message: "Login Successfull" })
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            const status = (error as ErrorMessage).status || 500
+            res.status(status).json({ message: error.message })
+        }
     }
 }

@@ -18,6 +18,9 @@ app.listen(process.env.PORT || 8080, () => {
 app.use(express.json())
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: false }))
-app.use(cors())
+app.use(cors({
+  origin: "http://localhost:5173", 
+  credentials: true, // allow cookies
+}))
 
 app.use("/auth", AuthRouter)

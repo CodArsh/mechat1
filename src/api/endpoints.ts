@@ -1,0 +1,4 @@
+export const endpoint = {
+    signup:'/auth/signup',
+    login:'/auth/login'
+}
