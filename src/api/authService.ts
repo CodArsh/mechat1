@@ -8,4 +8,7 @@ export const AuthService = {
 
     login: (data: LoginPayload): ApiResponse<AuthResponse> =>
         api.post(endpoint.login, data),
+
+    session: (): ApiResponse<AuthResponse> =>
+        api.get(endpoint.session)
 };

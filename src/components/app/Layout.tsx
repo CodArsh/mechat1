@@ -2,15 +2,17 @@ import Card from '../shared/Card'
 import Avatar from '../shared/Avatar'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { menus, suggested } from '../../constants'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import Dashboard from './Dashboard'
+import Context from '../../Context'
 
 const Layout = () => {
 
   const [open, setOpen] = useState<boolean>(true)
+  const { session } = useContext(Context)
   const dmWidth = 50
   const { pathname } = useLocation()
-
+ console.log(session)
   const sidebarStyle = {
     backgroundImage: 'linear-gradient( 89.7deg,  rgba(0,0,0,1) -10.7%, rgba(53,92,125,1) 88.8% )'
   }
@@ -23,9 +25,13 @@ const Layout = () => {
 
       <aside className="bg-white  overflow-auto scrollbar-hide">
         <div className="h-full py-8" style={sidebarStyle}>
-          <div title='Profile' className={`${open ? ' animate__animated animate__fadeIn' : 'animate__animated animate__pulse'}`}>
-            <Avatar dpSize={!open ? 'sm' : 'lg'} title={!open ? null : 'Muhammad Arsh'} subtitle='Software Engineer' image='/images/nodp.jpg' />
+          {
+            session &&
+               <div title='Profile' className={`${open ? ' animate__animated animate__fadeIn' : 'animate__animated animate__pulse'}`}>
+            <Avatar dpSize={!open ? 'sm' : 'lg'} title={!open ? null : session?.fullname} subtitle={session?.email} image='/images/nodp.jpg' />
           </div>
+          }
+       
           <div className='border-t border-t-zinc-500 mt-5 mb-4' />
           <div className='px-3'>
             {

@@ -18,7 +18,7 @@ const Avatar: React.FC<AvaratInterface> = ({ dpSize = "lg", title, subtitle = "w
             }
             {
                 (title && subtitle) && <div className='flex flex-col'>
-                    <h1 className={`${dpSize === 'md' ? 'text-sm' : 'text-xl'} font-medium `} style={{ color: titleColor }}>{title}</h1>
+                    <h1 className={`${dpSize === 'md' ? 'text-sm' : 'text-xl'} font-medium capitalize `} style={{ color: titleColor }}>{title}</h1>
                     {/* <label style={{ color: subtitleColor }}>{subtitle}</label> */}
                     <div className={`${dpSize === 'md' ? 'text-sm' : 'text-md'} `} style={{ color: subtitleColor }}>
                         {subtitle}

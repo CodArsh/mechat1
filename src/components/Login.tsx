@@ -1,14 +1,14 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import Button from "./shared/Button"
 import Card from "./shared/Card"
 import Input from "./shared/Input"
 import { AuthService } from "../api/authService"
-import { toast } from "react-toastify"
 import Form from "./shared/Form"
 import type { LoginPayload } from "../api/authTypes"
-import axios from "axios"
+import CatchError from "../lib/CatchError"
 
 const Login = () => {
+  const navigate = useNavigate()
   const handleLogin = async (e: LoginPayload) => {
     const params = {
       email: e.email,
@@ -16,13 +16,10 @@ const Login = () => {
     }
     try {
       const res = await AuthService.login(params);
-      toast.success(res.message)
+      navigate('/app/dashboard')
 
     } catch (err: unknown) {
-      if (axios.isAxiosError(err))
-        return toast.error(err.response?.data?.message)
-      if (err instanceof Error)
-        return toast.error(err.message)
+      CatchError(err)
     }
   };
 

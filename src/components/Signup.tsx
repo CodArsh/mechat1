@@ -6,7 +6,7 @@ import Form from "./shared/Form"
 import type { SignupPayload } from "../api/authTypes"
 import { AuthService } from "../api/authService"
 import { toast } from "react-toastify"
-import axios from "axios"
+import CatchError from "../lib/CatchError"
 
 const Signup = () => {
   const handleSignup = async (e: SignupPayload) => {
@@ -21,10 +21,7 @@ const Signup = () => {
       toast.success(res.message)
 
     } catch (err: unknown) {
-      if (axios.isAxiosError(err))
-        return toast.error(err.response?.data?.message)
-      if (err instanceof Error)
-        return toast.error(err.message)
+      CatchError(err)
     }
   };
   return (
