@@ -10,5 +10,8 @@ export const AuthService = {
         api.post(endpoint.login, data),
 
     session: (): ApiResponse<AuthResponse> =>
-        api.get(endpoint.session)
+        api.get(endpoint.session),
+    
+    setProfilePicture: (data: any): ApiResponse<any> =>
+        api.put(endpoint.profilePicture, data.path)
 };

@@ -9,7 +9,7 @@ export interface tokenInterface {
     email: string
     mobile: string
 }
-interface SessionInterface extends Request {
+export interface SessionInterface extends Request {
     session?: tokenInterface
 }
 const AuthMiddleware = async (req: SessionInterface, res: Response, next: NextFunction) => {

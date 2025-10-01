@@ -2,9 +2,9 @@ import { Request, Response } from "express"
 import AuthModel from "../model/auth.model"
 import bcrypt from 'bcrypt'
 import jwt from "jsonwebtoken"
-import mongoose from "mongoose"
 import { CatchError, TryError } from "../util/errors"
-import { tokenInterface } from "../middleware/auth.middleware"
+import { SessionInterface, tokenInterface } from "../middleware/auth.middleware"
+import { DownloadObject } from "../util/s3"
 
 const accessTokenExpiry = '10m'
 
@@ -64,4 +64,23 @@ export const getSession = async (req: Request, res: Response) => {
     } catch (error: unknown) {
         CatchError(error, res, "Invalid session!")
     }
-} 
+}
+
+export const updateProfilePicture = async (req: SessionInterface, res: Response) => {
+    try {
+
+        console.log('object1')
+        const path = req.body.path
+        console.log("`", path)
+        if (!path || !req.session)
+            throw TryError("Failed to update profile picture", 400)
+
+        console.log('object2')
+        await AuthModel.updateOne({ _id: req.session.id }, { $set: { image: path } })
+        const url = await DownloadObject(path)
+        console.log('object3')
+        res.json({ image: url })
+    } catch (error: unknown) {
+        CatchError(error, res, "Failed to update profile picture")
+    }
+}

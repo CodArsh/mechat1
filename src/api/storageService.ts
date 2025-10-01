@@ -7,5 +7,5 @@ export const StorageService = {
         api.post(endpoint.upload, data),
 
     sendToAWS: (data: any, file: any, options: any): ApiResponse<any> =>
-        api.put(data.url, file, options)
+        api.put(data.url, file, options),
 };

@@ -6,6 +6,8 @@ import { useContext, useState } from 'react'
 import Dashboard from './Dashboard'
 import Context from '../../Context'
 import { StorageService } from '../../api/storageService'
+import { v4 as uuid } from 'uuid'
+import { AuthService } from '../../api/authService'
 
 const Layout = () => {
 
@@ -27,25 +29,25 @@ const Layout = () => {
       if (!input.files)
         return
       const file = input.files[0]
+      const path = `profile-picture/${uuid()}.png`
       const payload = {
-        path: 'demo/a.png',
+        path,
         type: file.type
       }
       try {
-        const options: = {
+        const options = {
           headers: {
             'Content-Type': file.type
           }
         }
         const data = await StorageService.upload(payload)
-        console.log('send ', data, file, options)
         await StorageService.sendToAWS(data, file, options)
+        const userData = await AuthService.setProfilePicture({ path })
         console.log("File successfully uploaded")
-        console.log(data)
+        console.log(userData)
       } catch (error) {
         console.log(error)
       }
-
     }
   }
   return (
