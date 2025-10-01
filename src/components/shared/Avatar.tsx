@@ -8,13 +8,14 @@ interface AvaratInterface {
     image?: string
     titleColor?: string
     subtitleColor?: string
+    onClick?: () => void
 }
-const Avatar: React.FC<AvaratInterface> = ({ dpSize = "lg", title, subtitle = "write subtitle", image, titleColor = "#d4d4d8", subtitleColor = "#a1a1aa" }) => {
+const Avatar: React.FC<AvaratInterface> = ({onClick, dpSize = "lg", title, subtitle = "write subtitle", image, titleColor = "#d4d4d8", subtitleColor = "#a1a1aa" }) => {
     return (
         <div className='flex gap-3 p-3 items-center'>
             {
                 image &&
-                <img src={image} className={`rounded-full  ${dpSize === 'sm' ? 'h-6 w-6' : dpSize === 'md' ? 'h-12 w-12' : 'h-17 w-17'} object-content`} />
+                <img onClick={onClick} src={image} className={`rounded-full  ${dpSize === 'sm' ? 'h-6 w-6' : dpSize === 'md' ? 'h-12 w-12' : 'h-17 w-17'} object-content`} />
             }
             {
                 (title && subtitle) && <div className='flex flex-col'>

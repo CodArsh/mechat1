@@ -28,7 +28,6 @@ const isFileExist = async (path: string) => {
 export const downloadFile = async (req: Request, res: Response) => {
     try {
         const path = req?.body?.path
-
         if (!path || path === undefined)
             throw TryError("Path is missing", 400)
 
@@ -51,18 +50,18 @@ export const downloadFile = async (req: Request, res: Response) => {
 
 export const uploadFile = async (req: Request, res: Response) => {
     try {
-        const path = req?.body?.path
-        const type = req?.body?.type
-
+        const path = req.body?.path
+        const type = req.body?.type
+        
         if (!path || !type)
             throw TryError("Invalid request", 400)
-
+        
         const command = new PutObjectCommand({
             Bucket: process.env.S3_NETWORK,
             Key: path,
             ContentType: type
         })
-
+        
         const url = await getSignedUrl(connection, command, { expiresIn: 60 })
         res.json({ url })
     } catch (error) {

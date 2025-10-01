@@ -4,14 +4,10 @@ import bcrypt from 'bcrypt'
 import jwt from "jsonwebtoken"
 import mongoose from "mongoose"
 import { CatchError, TryError } from "../util/errors"
+import { tokenInterface } from "../middleware/auth.middleware"
 
 const accessTokenExpiry = '10m'
-interface tokenInterface {
-    id: mongoose.Types.ObjectId
-    fullname: string
-    email: string
-    mobile: string
-}
+
 
 const generateToken = (payload: tokenInterface) => {
     return jwt.sign(payload, process.env.AUTH_SECRET!, { expiresIn: accessTokenExpiry })

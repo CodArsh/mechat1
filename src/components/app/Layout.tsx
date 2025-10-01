@@ -5,6 +5,7 @@ import { menus, suggested } from '../../constants'
 import { useContext, useState } from 'react'
 import Dashboard from './Dashboard'
 import Context from '../../Context'
+import { StorageService } from '../../api/storageService'
 
 const Layout = () => {
 
@@ -12,11 +13,41 @@ const Layout = () => {
   const { session } = useContext(Context)
   const dmWidth = 50
   const { pathname } = useLocation()
- console.log(session)
+  console.log(session)
   const sidebarStyle = {
     backgroundImage: 'linear-gradient( 89.7deg,  rgba(0,0,0,1) -10.7%, rgba(53,92,125,1) 88.8% )'
   }
 
+  const uploadImage = () => {
+    const input = document.createElement("input")
+    input.type = "file"
+    input.accept = "image/*"
+    input.click()
+    input.onchange = async () => {
+      if (!input.files)
+        return
+      const file = input.files[0]
+      const payload = {
+        path: 'demo/a.png',
+        type: file.type
+      }
+      try {
+        const options: = {
+          headers: {
+            'Content-Type': file.type
+          }
+        }
+        const data = await StorageService.upload(payload)
+        console.log('send ', data, file, options)
+        await StorageService.sendToAWS(data, file, options)
+        console.log("File successfully uploaded")
+        console.log(data)
+      } catch (error) {
+        console.log(error)
+      }
+
+    }
+  }
   return (
     <div
       className={`bg-zinc-200 min-h-screen grid`}
@@ -27,11 +58,11 @@ const Layout = () => {
         <div className="h-full py-8" style={sidebarStyle}>
           {
             session &&
-               <div title='Profile' className={`${open ? ' animate__animated animate__fadeIn' : 'animate__animated animate__pulse'}`}>
-            <Avatar dpSize={!open ? 'sm' : 'lg'} title={!open ? null : session?.fullname} subtitle={session?.email} image='/images/nodp.jpg' />
-          </div>
+            <div title='Profile' className={`${open ? ' animate__animated animate__fadeIn' : 'animate__animated animate__pulse'}`}>
+              <Avatar onClick={uploadImage} dpSize={!open ? 'sm' : 'lg'} title={!open ? null : session?.fullname} subtitle={session?.email} image='/images/nodp.jpg' />
+            </div>
           }
-       
+
           <div className='border-t border-t-zinc-500 mt-5 mb-4' />
           <div className='px-3'>
             {
