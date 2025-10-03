@@ -18,7 +18,7 @@ export const menus = [
 
 export const suggested = [
     {
-        user: 'Faizan'
+        user: 'Faizan1'
     },
     {
         user: 'Shahzad'
