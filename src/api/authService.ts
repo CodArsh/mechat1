@@ -9,9 +9,12 @@ export const AuthService = {
     login: (data: LoginPayload): ApiResponse<AuthResponse> =>
         api.post(endpoint.login, data),
 
+    logout: (): ApiResponse<AuthResponse> =>
+        api.post(endpoint.logout),
+
     session: (): ApiResponse<AuthResponse> =>
         api.get(endpoint.session),
-    
+
     setProfilePicture: (data: any): ApiResponse<any> =>
         api.put(endpoint.profilePicture, data.path)
 };

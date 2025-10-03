@@ -15,7 +15,7 @@ import Chat from "./components/app/Chat"
 import NotFound from "./components/NotFound"
 import { ToastContainer } from 'react-toastify';
 import Context from "./Context"
-import Guard from "./Guard"
+import Guard from "./AuthGuard"
 import { useState } from "react"
 
 const App = () => {

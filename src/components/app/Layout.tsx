@@ -1,18 +1,23 @@
 import Card from '../shared/Card'
 import Avatar from '../shared/Avatar'
-import { Link, Outlet, useLocation } from 'react-router-dom'
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { menus, suggested } from '../../constants'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Dashboard from './Dashboard'
 import Context from '../../Context'
 import { StorageService } from '../../api/storageService'
 import { v4 as uuid } from 'uuid'
 import { AuthService } from '../../api/authService'
+import Fetcher from '../../lib/Fetcher'
+import useSwr from 'swr'
+import CatchError from '../../lib/CatchError'
 
 const Layout = () => {
-
+  const navigate = useNavigate()
   const [open, setOpen] = useState<boolean>(true)
   const { session } = useContext(Context)
+  const { error } = useSwr('/auth/refresh-token', Fetcher, { refreshInterval: 3000, shouldRetryOnError: false })
+
   const dmWidth = 50
   const { pathname } = useLocation()
   console.log(session)
@@ -20,6 +25,19 @@ const Layout = () => {
     backgroundImage: 'linear-gradient( 89.7deg,  rgba(0,0,0,1) -10.7%, rgba(53,92,125,1) 88.8% )'
   }
 
+  // useEffect(() => {
+  //   if (error)
+  //     logout()
+  // }, [error])
+  
+  // const logout = async () => {
+  //   try {
+  //     await AuthService.logout()
+  //     navigate('/login')
+  //   } catch (error) {
+  //     CatchError(error)
+  //   }
+  // }
   const uploadImage = () => {
     const input = document.createElement("input")
     input.type = "file"

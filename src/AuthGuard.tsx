@@ -1,10 +1,10 @@
 import { useContext, useEffect } from "react"
 import Context from "./Context"
 import CatchError from "./lib/CatchError"
-import { AuthService } from "./api/authService"
+import  { AuthService } from "./api/authService"
 import { Outlet, useNavigate } from "react-router-dom"
 
-const Guard = () => {
+const AuthGuard = () => {
     const { session, setSession } = useContext(Context)
     const navigate = useNavigate()
 
@@ -28,4 +28,4 @@ const Guard = () => {
     return <Outlet />
 }
 
-export default Guard
+export default AuthGuard

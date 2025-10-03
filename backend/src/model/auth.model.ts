@@ -1,5 +1,7 @@
 import { model, Schema } from 'mongoose'
 import bcrypt from 'bcrypt'
+import moment from 'moment'
+import { v4 as uuid} from 'uuid'
 
 const authSchema = new Schema({
     image: {
@@ -28,11 +30,22 @@ const authSchema = new Schema({
         type: String,
         required: true,
         trim: true
+    },
+    refreshToken: {
+        type: String
+    },
+    expiry: {
+        type: Date
     }
 }, { timestamps: true })
 
 authSchema.pre('save', async function (next) {
     this.password = await bcrypt.hash(this.password.toString(), 12)
+    next()
+})
+authSchema.pre('save', function (next) {
+    this.refreshToken = uuid()
+    this.expiry = moment().add(7, "days").toDate()
     next()
 })
 const AuthModel = model('Auth', authSchema)

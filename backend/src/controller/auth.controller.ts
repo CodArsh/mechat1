@@ -5,12 +5,26 @@ import jwt from "jsonwebtoken"
 import { CatchError, TryError } from "../util/errors"
 import { SessionInterface, tokenInterface } from "../middleware/auth.middleware"
 import { DownloadObject } from "../util/s3"
+import { v4 as uuid } from "uuid"
+import moment from "moment"
 
 const accessTokenExpiry = '10m'
-
+type TokenType = "at" | "rt"
 
 const generateToken = (payload: tokenInterface) => {
-    return jwt.sign(payload, process.env.AUTH_SECRET!, { expiresIn: accessTokenExpiry })
+    const accessToken = jwt.sign(payload, process.env.AUTH_SECRET!, { expiresIn: accessTokenExpiry })
+    const refreshToken = uuid()
+    return { accessToken, refreshToken }
+}
+
+const getOptions = (tokenType: TokenType) => {
+    return {
+        httpOnly: true,
+        maxAge: tokenType === 'at' ? (10 * 60) * 1000 : (7 * 24 * 60 * 60) * 1000,
+        // explaination:- maxAge: tokenType === 'at'  ? 10min : 7 days
+        secure: true,
+        domain: 'localhost'
+    }
 }
 export const signup = async (req: Request, res: Response) => {
     try {
@@ -38,15 +52,16 @@ export const login = async (req: Request, res: Response) => {
                 email: user.email,
                 mobile: user.mobile,
             }
-            const accesstoken = generateToken(payload)
-            const options = {
-                httpOnly: true,
-                maxAge: (10 * 60) * 1000,
-                secure: true,
-                domain: 'localhost'
-            }
-            console.log(email, password)
-            res.cookie("accessToken", accesstoken, options)
+
+            const { accessToken, refreshToken } = generateToken(payload)
+            await AuthModel.updateOne({ _id: user._id }, {
+                $set: {
+                    refreshToken,
+                    expiry: moment().add(7, "days").toDate()
+                }
+            })
+            res.cookie("accessToken", accessToken, getOptions('at'))
+            res.cookie("refreshToken", refreshToken, getOptions('rt'))
             res.json({ message: "Login Successfull" })
         }
     } catch (error: unknown) {
@@ -82,5 +97,45 @@ export const updateProfilePicture = async (req: SessionInterface, res: Response)
         res.json({ image: url })
     } catch (error: unknown) {
         CatchError(error, res, "Failed to update profile picture")
+    }
+}
+
+export const refreshToken = async (req: SessionInterface, res: Response)=>{
+    try {
+        if(!req.session)
+            throw TryError("Failed to refresh token", 401)
+        const {accessToken, refreshToken} = generateToken(req.session)
+
+        await AuthModel.updateOne({_id: req.session.id}, {$set: {
+            refreshToken,
+            expiry: moment().add(7, 'days').toDate()
+        }})
+
+        res.cookie("accessToken", accessToken, getOptions('at'))
+        res.cookie("refreshToken", refreshToken, getOptions('rt'))
+        res.json({message: 'Token refreshed'})
+    }
+    catch(err)
+    {
+        CatchError(err, res, "Failed to refresh token")
+    }
+}
+
+export const logout = async (req: Request, res: Response)=>{
+    try {
+        const options = {
+            httpOnly: true,
+            maxAge: 0,
+            secure: false,
+            domain: 'localhost'
+        }
+
+        res.clearCookie("accessToken", options)
+        res.clearCookie("refreshToken", options)
+        res.json({message: "Logout success"})
+    }
+    catch(err)
+    {
+        CatchError(err, res, "Failed to update profile picture")
     }
 }
