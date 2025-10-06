@@ -1,7 +1,7 @@
 import { model, Schema } from 'mongoose'
 import bcrypt from 'bcrypt'
 import moment from 'moment'
-import { v4 as uuid} from 'uuid'
+// import { v4 as uuidv4 } from 'uuid';
 
 const authSchema = new Schema({
     image: {
@@ -44,7 +44,7 @@ authSchema.pre('save', async function (next) {
     next()
 })
 authSchema.pre('save', function (next) {
-    this.refreshToken = uuid()
+    // this.refreshToken = uuidv4()
     this.expiry = moment().add(7, "days").toDate()
     next()
 })

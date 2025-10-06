@@ -6,7 +6,7 @@ import { useContext, useEffect, useState } from 'react'
 import Dashboard from './Dashboard'
 import Context from '../../Context'
 import { StorageService } from '../../api/storageService'
-import { v4 as uuid } from 'uuid'
+// import { v4 as uuid } from 'uuid'
 import { AuthService } from '../../api/authService'
 import Fetcher from '../../lib/Fetcher'
 import useSwr from 'swr'
@@ -47,7 +47,7 @@ const Layout = () => {
       if (!input.files)
         return
       const file = input.files[0]
-      const path = `profile-picture/${uuid()}.png`
+      const path = `profile-picture/abcd.png`
       const payload = {
         path,
         type: file.type

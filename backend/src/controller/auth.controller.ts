@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken"
 import { CatchError, TryError } from "../util/errors"
 import { SessionInterface, tokenInterface } from "../middleware/auth.middleware"
 import { DownloadObject } from "../util/s3"
-import { v4 as uuid } from "uuid"
+// import { v4 as uuid } from "uuid"
 import moment from "moment"
 
 const accessTokenExpiry = '10m'
@@ -13,7 +13,7 @@ type TokenType = "at" | "rt"
 
 const generateToken = (payload: tokenInterface) => {
     const accessToken = jwt.sign(payload, process.env.AUTH_SECRET!, { expiresIn: accessTokenExpiry })
-    const refreshToken = uuid()
+    // const refreshToken = uuid()
     return { accessToken, refreshToken }
 }
 
